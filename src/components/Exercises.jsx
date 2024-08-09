@@ -3,11 +3,12 @@ import Form from 'react-bootstrap/Form';
 import NavBar from './Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, ListGroup, Modal } from 'react-bootstrap';
-import { addItem } from '../features/exerciseListSlice';
+import { addItem, deleteItem } from '../features/exerciseListSlice';
 
 
 const Exercises = () => {
     const [selectedValue, setSelectedValue] = useState('');
+    const [selectedIndex, setSelectedIndex] = useState(null);
     const { exerciseList } = useSelector((state) => state.exerciseList);
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
@@ -24,12 +25,16 @@ const Exercises = () => {
       const handleClose = () => setShowModal(false);
   
       
-      const handleClick = (exercise) => {
+      const handleClick = (exercise,index) => {
+        setSelectedIndex(index)
         setSelectedValue(exercise);
         setShowModal(true)
       };
       
-      const handleDelete = () => {}
+      const handleDelete = () => {
+        dispatch(deleteItem(selectedIndex))
+        setShowModal(false)
+      }
   
   
   
@@ -51,7 +56,7 @@ const Exercises = () => {
       <ListGroup>
         <h3>Click on the exercise for if youd like to delete. </h3>
         {exerciseList.map((exercise, index) => (
-      <ListGroup.Item key={index} onClick={() => handleClick(exercise)}>{exercise}</ListGroup.Item>
+      <ListGroup.Item key={index} onClick={() => handleClick(exercise,index)}>{exercise}</ListGroup.Item>
     ))}
     </ListGroup>
     <Modal show={showModal} onHide={handleClose}>

@@ -17,7 +17,11 @@ export const exerciseListSlice = createSlice({
         },
 
         deleteItem: (state, action) => {
-            state.exerciseList.filter((action.payload))
+            const index = action.payload;
+
+            const newState = state.exerciseList.filter((_, i) => i !== index);
+           
+            state.exerciseList = newState;
         },
     },
 });
